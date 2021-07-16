@@ -1,0 +1,57 @@
+---
+title: "Statistics"
+author: "Stephen Kanyerezi"
+date: "7/16/2021"
+output: pdf_document
+---
+
+# Pearson vs spearman's cofficient
+
+Pearson correlation: Pearson correlation evaluates the linear relationship between two continuous variables.
+
+Spearman correlation: Spearman correlation evaluates the monotonic relationship. The Spearman correlation coefficient is based on the ranked values for each variable rather than the raw data.
+
+
+```{r load-dat-pack, echo=FALSE, warning=FALSE, message=FALSE}
+data <- trees
+head(data, 3)
+library(tidyverse)
+```
+
+Next we create a scatter plot using ggplot2
+
+```{r scat, echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(data, aes(x = Girth, y = Height)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se =FALSE, color = 'red')
+```
+
+Test for assumptions of correlation, here two assumptions are checked which need to be fulfilled before performing the correlation (Shapiro test, which is test to check the input variable is following the normal distribution or not, is used to check whether the variables i.e. Girth and Height are normally distributed or not)
+
+```{r test-norm, echo=FALSE, warning=FALSE, message=FALSE}
+shapiro.test(data$Girth)
+shapiro.test(data$Height)
+```
+
+Perform correlation
+
+```{r corr, echo=FALSE, warning=FALSE, message=FALSE}
+cor(data$Girth,data$Height, method = "pearson")
+cor(data$Girth,data$Height, method = "spearman")
+```
+
+Test for the significance of correlation
+
+For Pearson
+
+```{r pear, echo=FALSE, warning=FALSE, message=FALSE}
+Pear <- cor.test(data$Girth, data$Height, method = 'pearson')
+Pear
+```
+
+For spearman 
+
+```{r spear, echo=FALSE, warning=FALSE, message=FALSE}
+Spear <- cor.test(data$Girth, data$Height, method = 'spearman')
+Spear
+```
